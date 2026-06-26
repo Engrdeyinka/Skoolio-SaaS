@@ -18,13 +18,13 @@ export const BRAND = {
   platformName: "Skoolio School Management Platform",
 
   // Fallback school display name (used only when Settings has none set)
-  schoolName: "Tunmise Overcomer Private School",
+  schoolName: "Skoolio Academy",
 
   // Short code: SMS signature, student login scheme, payment reference prefix
-  shortCode: "TOPS",
+  shortCode: "SKL",
 
   // SMS sender ID registered with the telco / SMS gateway
-  smsSenderId: "Tunmisesch",
+  smsSenderId: "Skoolio",
 };
 
 // Convenience: uppercased school name for letterheads / receipts
