@@ -10,11 +10,11 @@ export default defineConfig({
     // round/rounded mask shapes on Android launchers.
     maskable: {
       ...minimal2023Preset.maskable,
-      resizeOptions: { background: '#0e2b6e' },
+      resizeOptions: { background: '#059669' },
     },
     apple: {
       ...minimal2023Preset.apple,
-      resizeOptions: { background: '#0e2b6e' },
+      resizeOptions: { background: '#059669' },
     },
   },
   images: ['public/favicon.svg'],
