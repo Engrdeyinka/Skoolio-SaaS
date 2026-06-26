@@ -1,0 +1,286 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 152 81% 96%;   /* emerald-50 */
+    --sidebar-foreground: 164 86% 16%;   /* emerald-900 */
+    --sidebar-primary: 160 84% 39%;      /* emerald-600 */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 149 80% 90%;       /* emerald-100 */
+    --sidebar-accent-foreground: 164 86% 16%;
+    --sidebar-border: 152 76% 80%;       /* emerald-200 */
+    --sidebar-ring: 160 84% 39%;
+  }
+
+  .dark {
+    --background: 222 47% 5%;       /* slate-950 */
+    --foreground: 213 31% 91%;      /* slate-200 */
+    --card: 222 47% 8%;             /* slate-900 */
+    --card-foreground: 213 31% 91%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 160 84% 45%;          /* emerald-500 — readable on dark */
+    --primary-foreground: 222 47% 5%;
+    --secondary: 222 28% 16%;        /* slate-800 */
+    --secondary-foreground: 213 31% 91%;
+    --muted: 222 28% 16%;
+    --muted-foreground: 215 16% 57%; /* slate-400 */
+    --accent: 163 40% 14%;           /* emerald tint */
+    --accent-foreground: 149 80% 85%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 222 28% 20%;           /* slate-700 */
+    --input: 222 28% 16%;
+    --ring: 160 84% 45%;
+    --chart-1: 220 70% 55%;
+    --chart-2: 160 60% 48%;
+    --chart-3: 30 80% 58%;
+    --chart-4: 280 65% 62%;
+    --chart-5: 340 75% 58%;
+    --sidebar-background: 163 94% 6%;    /* deep emerald-dark */
+    --sidebar-foreground: 149 80% 85%;
+    --sidebar-primary: 160 84% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 163 40% 12%;
+    --sidebar-accent-foreground: 149 80% 85%;
+    --sidebar-border: 163 30% 16%;
+    --sidebar-ring: 160 84% 45%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* ── Thermal receipt print styles ───────────────────────────────────────── */
+/* 58mm roll, continuous length (auto), no page margins so it fills the paper. */
+@page { size: 58mm auto; margin: 0; }
+
+@media print {
+  html, body {
+    background: #fff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 58mm !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* The print view is portaled to <body>, so hide every other body child
+     (including #root). This leaves a single continuous receipt — no blank
+     pages from the app UI occupying layout space. */
+  body > *:not(#__receipt_print_view__) { display: none !important; }
+  #__receipt_print_view__ {
+    display: block !important;
+    width: 58mm !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Mobile / POS performance fixes
+   - touch-action: manipulation removes the 300ms tap delay on Android browsers
+   - -webkit-tap-highlight-color removes the grey flash on tap
+   - will-change: auto prevents unwanted GPU layer promotion on static elements
+   - On touch devices, disable heavy backdrop-blur which kills low-end GPU
+───────────────────────────────────────────────────────────────────────────── */
+button,
+a,
+[role="button"],
+[role="menuitem"],
+[role="option"],
+label,
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+input[type="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove 300ms delay on the whole document for touch devices */
+html {
+  touch-action: manipulation;
+}
+
+/* ── Press / tap feedback ────────────────────────────────────────────────── */
+/* scale + darken fires on :active (touchstart on Android) — pure CSS,
+   zero JS, zero React re-render, instant on even the slowest POS hardware. */
+button:active,
+a:active,
+[role="button"]:active,
+[role="menuitem"]:active,
+[role="tab"]:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+  transform: scale(0.94) !important;
+  filter: brightness(0.82) !important;
+  transition: transform 50ms ease-in, filter 50ms ease-in !important;
+}
+
+/* Springy return when the finger lifts */
+button,
+a,
+[role="button"],
+[role="menuitem"],
+[role="tab"],
+input[type="submit"],
+input[type="button"] {
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 220ms ease-out;
+}
+
+/* On coarse-pointer (touch) devices, replace backdrop-blur with a solid
+   semi-transparent background — blur is extremely expensive on POS hardware */
+@media (pointer: coarse) {
+  .backdrop-blur-sm,
+  .backdrop-blur,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Tone down transition durations so interactions feel snappier */
+  .transition-all,
+  .transition-colors,
+  .transition-opacity,
+  .transition-transform,
+  .transition-shadow {
+    transition-duration: 100ms !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Dark-mode overrides
+   Written outside @layer so they always beat Tailwind utility classes.
+   The app uses hardcoded Tailwind colour utilities throughout, so we remap
+   the most common ones here instead of touching every component.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Base surfaces */
+.dark body,
+.dark .min-h-screen { background-color: rgb(2 6 23); color: rgb(226 232 240); }
+
+/* White / near-white backgrounds → deep navy */
+.dark .bg-white           { background-color: rgb(15 23 42); }   /* slate-900 */
+.dark .bg-white\/80       { background-color: rgb(15 23 42); }
+.dark .bg-white\/90       { background-color: rgb(15 23 42); }
+
+/* Slate backgrounds */
+.dark .bg-slate-50        { background-color: rgb(8 14 36);  }   /* darker than slate-900 */
+.dark .bg-slate-100       { background-color: rgb(30 41 59); }   /* slate-800 */
+.dark .bg-slate-200       { background-color: rgb(51 65 85); }   /* slate-700 */
+.dark .bg-slate-700       { background-color: rgb(71 85 105); }
+.dark .bg-slate-800       { background-color: rgb(51 65 85); }
+.dark .bg-slate-900       { background-color: rgb(15 23 42); }
+.dark .bg-slate-950       { background-color: rgb(2 6 23);   }
+
+/* Hover backgrounds */
+.dark .hover\:bg-slate-50:hover   { background-color: rgb(30 41 59); }
+.dark .hover\:bg-slate-100:hover  { background-color: rgb(51 65 85); }
+.dark .hover\:bg-white:hover      { background-color: rgb(30 41 59); }
+.dark .hover\:shadow-md:hover     { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4); }
+
+/* ── Text colours ── */
+.dark .text-slate-950     { color: rgb(248 250 252); }
+.dark .text-slate-900     { color: rgb(248 250 252); }
+.dark .text-slate-800     { color: rgb(241 245 249); }
+.dark .text-slate-700     { color: rgb(226 232 240); }
+.dark .text-slate-600     { color: rgb(203 213 225); }
+.dark .text-slate-500     { color: rgb(148 163 184); }
+.dark .text-slate-400     { color: rgb(100 116 139); }
+
+/* ── Borders ── */
+.dark .border-slate-50    { border-color: rgb(15 23 42);  }
+.dark .border-slate-100   { border-color: rgb(30 41 59);  }
+.dark .border-slate-200   { border-color: rgb(51 65 85);  }
+.dark .border-slate-200\/60 { border-color: rgb(51 65 85 / 0.6); }
+.dark .border-slate-300   { border-color: rgb(71 85 105); }
+
+/* Divide lines */
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: rgb(30 41 59); }
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: rgb(51 65 85); }
+
+/* ── Form elements ── */
+.dark input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),
+.dark textarea,
+.dark select {
+  background-color: rgb(30 41 59);
+  color: rgb(226 232 240);
+  border-color: rgb(71 85 105);
+}
+.dark input::placeholder,
+.dark textarea::placeholder { color: rgb(100 116 139); }
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus { border-color: rgb(139 92 246); outline-color: rgb(139 92 246 / 0.4); }
+
+/* ── Cards (shadcn uses CSS vars; this catches manual bg-white cards) ── */
+.dark .shadow-sm  { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.4); }
+.dark .shadow-md  { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5); }
+.dark .shadow-xl  { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.6); }
+.dark .shadow-2xl { box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.7); }
+
+/* ── Specific UI patterns ── */
+/* Gradient backgrounds used in page wrappers */
+.dark .from-slate-50,
+.dark .via-blue-50\/20,
+.dark .to-indigo-50\/30 { --tw-gradient-stops: initial; }
+
+.dark .bg-gradient-to-br.from-slate-50 {
+  background: rgb(2 6 23);
+}
+
+/* Stat cards with colored left borders keep their accent colour but go dark */
+.dark [class*="border-l-"] {
+  background-color: rgb(15 23 42);
+}
+
+/* Table rows */
+.dark tr:nth-child(even) td { background-color: rgb(30 41 59 / 0.5); }
+
+/* Scrollbar (webkit) */
+.dark ::-webkit-scrollbar-track { background: rgb(15 23 42); }
+.dark ::-webkit-scrollbar-thumb { background: rgb(51 65 85); border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: rgb(71 85 105); }

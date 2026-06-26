@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Shield body -->
+  <path d="M50 3 L93 19 L93 58 C93 80 74 95 50 98 C26 95 7 80 7 58 L7 19 Z" fill="#0e2b6e"/>
+  <!-- Gold border -->
+  <path d="M50 3 L93 19 L93 58 C93 80 74 95 50 98 C26 95 7 80 7 58 L7 19 Z"
+        fill="none" stroke="#f5a623" stroke-width="3.5"/>
+  <!-- Top gold band -->
+  <path d="M7 19 L50 3 L93 19 L93 30 L7 30 Z" fill="#f5a623" opacity="0.22"/>
+  <!-- Gold divider -->
+  <line x1="12" y1="30" x2="88" y2="30" stroke="#f5a623" stroke-width="2"/>
+  <!-- 5-point star -->
+  <polygon
+    points="50,6 52.9,15.1 62.5,15.1 54.8,20.8 57.7,29.9 50,24.2 42.3,29.9 45.2,20.8 37.5,15.1 47.1,15.1"
+    fill="#f5a623"/>
+  <!-- Bold T -->
+  <text x="50" y="80"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="52"
+        font-weight="bold"
+        fill="white">T</text>
+  <!-- Bottom gold rule -->
+  <line x1="22" y1="85" x2="78" y2="85" stroke="#f5a623" stroke-width="1.5" opacity="0.65"/>
+  <!-- TOPS sub-text -->
+  <text x="50" y="94"
+        text-anchor="middle"
+        font-family="Georgia, serif"
+        font-size="9"
+        font-weight="bold"
+        letter-spacing="3.5"
+        fill="#f5a623">TOPS</text>
+</svg>

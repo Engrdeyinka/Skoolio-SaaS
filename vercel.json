@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/ask.js": { "maxDuration": 30 }
+  },
+  "buildCommand": "NODE_OPTIONS=--max-old-space-size=4096 npm run build",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
