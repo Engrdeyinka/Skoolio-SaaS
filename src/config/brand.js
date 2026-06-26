@@ -18,7 +18,7 @@ export const BRAND = {
   platformName: "Skoolio School Management Platform",
 
   // Fallback school display name (used only when Settings has none set)
-  schoolName: "",
+  schoolName: "Skoolio",
 
   // Short code: SMS signature, student login scheme, payment reference prefix
   shortCode: "SKL",
