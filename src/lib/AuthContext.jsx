@@ -2,7 +2,10 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { supabase } from '@/api/supabaseClient';
 
 const AuthContext = createContext();
-const STORAGE_KEY = 'sb-vuacujvzizfuuzbzkbhj-auth-token';
+// Supabase stores the session under sb-<project-ref>-auth-token. Derive the ref
+// from the configured URL so this works for any instance/deployment.
+const SUPABASE_REF = (import.meta.env.VITE_SUPABASE_URL || '').split('//')[1]?.split('.')[0] || '';
+const STORAGE_KEY = `sb-${SUPABASE_REF}-auth-token`;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
